@@ -172,8 +172,8 @@ def new_user():
                 if total_users == 1:
                     print("Also, because you are the first user for this system, you get admin access to delete it "
                           "all!\n")
-                    daphne_blake.write("admin command")
-                daphne_blake.write("\ncreate new planner")
+                    daphne_blake.write("admin command\n")
+                daphne_blake.write("create new planner\n")
                 daphne_blake.close()
                 frederick_jones = open("vault.txt", "a")
                 frederick_jones.write("\n" + new_pass)
@@ -209,7 +209,7 @@ def admin_command():
         else:
             print("That's not an actual response, try again.\n")
     if chkpt == "y" or chkpt == "yes" or chkpt == "ye":
-        for x in range(0, total_users):
+        for x in range(0, (total_users + 1)):
             global current_user
             current_user = x
             if os.path.exists(get_curr_dir()):
