@@ -7,6 +7,7 @@ Reference sheet for anyone that doesn't watch Scooby-Doo:
 
 federick_jones - file handler
 raggy - referencer
+daphne_blake - directory handler
 
 vault is the password manager
 any file with the name "dir" is the menu for the user's planners
@@ -90,6 +91,9 @@ def main():
                     global current_user
                     current_user = user_id
                     global current_password
+                    # this is necessary or else it keeps a new freakin line
+                    raggy = raggy.rstrip()
+                    raggy = raggy.lstrip()
                     current_password = raggy
                     break
                 else:
@@ -113,8 +117,11 @@ def main():
 
     # after this point, password has been received
     attempts = 4
+    print("\nWelcome, user " + str(current_user) + ", with password \"" + str(current_password) + "\"")
     while attempts > 0:
-        guess = input("Please enter the password for user " + str(current_user) + ".\nPlease note you currently have " + str(attempts) + " attempts left and running out of attempts will end the system, causing you to start over\n")
+        guess = input(
+            "Please enter the password for user " + str(current_user) + ".\nPlease note you currently have " + str(
+                attempts) + " attempts left and running out of attempts will end the system, causing you to start over\n")
         if guess == current_password:
             break
         else:
@@ -126,8 +133,6 @@ def main():
         print("Goodbye.")
         exit()
     print("\nWelcome, user " + str(current_user) + ", with password \"" + str(current_password) + "\"")
-    if current_user == 1:
-        admin_command()
     print("aight, peace out")
 
 
@@ -145,7 +150,8 @@ def new_user():
                          "after it is set: ")
         if new_pass.isprintable():
             while True:
-                chkpt = input("Your new password is currently: \"" + str(new_pass) + "\"\nAre you sure you want it to be this? Please respond with Y or N.\n")
+                chkpt = input("Your new password is currently: \"" + str(
+                    new_pass) + "\"\nAre you sure you want it to be this? Please respond with Y or N.\n")
                 if chkpt.isalpha():
                     chkpt = chkpt.lower()
                     if chkpt == "y" or chkpt == "yes" or chkpt == "ye" or chkpt == "no" or chkpt == "n":
@@ -161,12 +167,31 @@ def new_user():
                 print("Your password is now set to \"" + str(new_pass) + "\" and cannot be changed. Please remember "
                                                                          "it so that you may log\nback in at later "
                                                                          "points as needed.")
+                daphne_blake = open(get_curr_dir(), "x")
+                if total_users == 1:
+                    print("Also, because you are the first user for this system, you get admin access to delete it "
+                          "all!\n")
+                    daphne_blake.write("admin command")
+                daphne_blake.write("\ncreate new planner")
+                daphne_blake.close()
                 frederick_jones = open("vault.txt", "a")
                 frederick_jones.write("\n" + new_pass)
                 frederick_jones.close()
                 break
         else:
             print("The password you entered contains illegal characters. Please try again\n")
+
+
+def print_curr_dir():
+    daphne_blake = open(get_curr_dir())
+    count = 1
+    for line in daphne_blake:
+        print(str(count) + " - " + line)
+        count += 1
+
+def get_curr_dir():
+    return str(current_user) + "directory.txt"
+
 
 def admin_command():
     while True:
@@ -183,6 +208,7 @@ def admin_command():
     if chkpt == "y" or chkpt == "yes" or chkpt == "ye":
         os.remove("vault.txt")
         print("Everything's deleted.")
+
 
 def cs():
     for x in range(100):
