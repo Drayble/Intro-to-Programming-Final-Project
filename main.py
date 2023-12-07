@@ -126,20 +126,8 @@ def main():
         print("Goodbye.")
         exit()
     print("\nWelcome, user " + str(current_user) + ", with password \"" + str(current_password) + "\"")
-    while True:
-        chkpt = input("\nwanna wipe the system?\n")
-        if chkpt.isalpha():
-            chkpt = chkpt.lower()
-            if chkpt == "y" or chkpt == "yes" or chkpt == "ye" or chkpt == "no" or chkpt == "n":
-                # break for checkpoint
-                break
-            else:
-                print("That's not an actual response, try again.\n")
-        else:
-            print("That's not an actual response, try again.\n")
-    if chkpt == "y" or chkpt == "yes" or chkpt == "ye":
-        os.remove("vault.txt")
-        print("SHIT GOT DELETED, YO!")
+    if current_user == 1:
+        admin_command()
     print("aight, peace out")
 
 
@@ -180,6 +168,21 @@ def new_user():
         else:
             print("The password you entered contains illegal characters. Please try again\n")
 
+def admin_command():
+    while True:
+        chkpt = input("\nWanna wipe the system?\n")
+        if chkpt.isalpha():
+            chkpt = chkpt.lower()
+            if chkpt == "y" or chkpt == "yes" or chkpt == "ye" or chkpt == "no" or chkpt == "n":
+                # break for checkpoint
+                break
+            else:
+                print("That's not an actual response, try again.\n")
+        else:
+            print("That's not an actual response, try again.\n")
+    if chkpt == "y" or chkpt == "yes" or chkpt == "ye":
+        os.remove("vault.txt")
+        print("Everything's deleted.")
 
 def cs():
     for x in range(100):
