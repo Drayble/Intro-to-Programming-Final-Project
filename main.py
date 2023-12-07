@@ -117,7 +117,6 @@ def main():
 
     # after this point, password has been received
     attempts = 4
-    print("\nWelcome, user " + str(current_user) + ", with password \"" + str(current_password) + "\"")
     while attempts > 0:
         guess = input(
             "Please enter the password for user " + str(current_user) + ".\nPlease note you currently have " + str(
@@ -133,6 +132,8 @@ def main():
         print("Goodbye.")
         exit()
     print("\nWelcome, user " + str(current_user) + ", with password \"" + str(current_password) + "\"")
+    print_curr_dir()
+    admin_command()
     print("aight, peace out")
 
 
@@ -186,6 +187,8 @@ def print_curr_dir():
     daphne_blake = open(get_curr_dir())
     count = 1
     for line in daphne_blake:
+        line = line.lstrip()
+        line = line.rstrip()
         print(str(count) + " - " + line)
         count += 1
 
@@ -206,6 +209,11 @@ def admin_command():
         else:
             print("That's not an actual response, try again.\n")
     if chkpt == "y" or chkpt == "yes" or chkpt == "ye":
+        for x in range(0, total_users):
+            global current_user
+            current_user = x
+            if os.path.exists(get_curr_dir()):
+                os.remove(get_curr_dir())
         os.remove("vault.txt")
         print("Everything's deleted.")
 
