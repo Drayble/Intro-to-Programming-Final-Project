@@ -167,7 +167,7 @@ def new_user():
                 current_password = new_pass
                 print("Your password is now set to \"" + str(new_pass) + "\" and cannot be changed. Please remember "
                                                                          "it so that you may log\nback in at later "
-                                                                         "points as needed.")
+                                                                         "points as needed.\n")
                 daphne_blake = open(get_curr_dir(), "x")
                 if total_users == 1:
                     print("Also, because you are the first user for this system, you get admin access to delete it "
