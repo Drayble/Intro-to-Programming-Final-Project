@@ -205,10 +205,41 @@ def run_choice(choice: int):
     '''
 
 def create_routine():
-    print("routine creation")
+    while True:
+        routine_name = input("\nPlease enter the name you'd like for this routine: ")
+        if routine_name.isprintable():
+            while True:
+                chkpt = input("Your new routine is currently named: \"" + str(
+                    routine_name) + "\"\nAre you sure you want it to be this? Please respond with Y or N.\n")
+                if chkpt.isalpha():
+                    chkpt = chkpt.lower()
+                    if chkpt == "y" or chkpt == "yes" or chkpt == "ye" or chkpt == "no" or chkpt == "n":
+                        # break for checkpoint
+                        break
+                    else:
+                        print("That's not an actual response, try again.\n")
+                else:
+                    print("That's not an actual response, try again.\n")
+            if chkpt == "y" or chkpt == "yes" or chkpt == "ye":
+                print("Your routine is now named \"" + str(routine_name) + "\" and cannot be changed.\n")
+                count = 1
+                while True:
+                    filename = str(current_user) + str(routine_name) + str(count) + ".txt"
+                    try:
+                        velma_dinkly = open(filename, "x")
+                        break
+                    except:
+                        count += 1
+                velma_dinkly.close()
+                daphne_blake = open(get_curr_dir(), "a")
+                daphne_blake.write((routine_name + str(count)) + "\n")
+                daphne_blake.close()
+                break
+        else:
+            print("The password you entered contains illegal characters. Please try again\n")
 
 def run_routine(filename):
-    #if ... contains "routine" then pass it here
+    # if ... contains "routine" then pass it here
     print("running routine \"" + str(filename) + "\"")
 
 def get_dir_choice():
@@ -264,9 +295,16 @@ def admin_command():
         else:
             print("That's not an actual response, try again.\n")
     if chkpt == "y" or chkpt == "yes" or chkpt == "ye":
-        for x in range(0, (total_users + 1)):
+        for x in range(1, (total_users + 1)):
             global current_user
             current_user = x
+            set_curr_dir_len(get_curr_dir())
+            daphne_blake = open(get_curr_dir())
+            for y in range(0, current_dir_len + 1):
+                temp_holder = str(current_user) + truncate(daphne_blake.readline()) + ".txt"
+                if os.path.exists(temp_holder):
+                    os.remove(temp_holder)
+            daphne_blake.close()
             if os.path.exists(get_curr_dir()):
                 os.remove(get_curr_dir())
         os.remove("vault.txt")
