@@ -8,6 +8,7 @@ Reference sheet for anyone that doesn't watch Scooby-Doo:
 federick_jones - file handler
 raggy - referencer
 daphne_blake - directory handler
+velma_dinkly - decision handler
 
 vault is the password manager
 any file with the name "dir" is the menu for the user's planners
@@ -17,6 +18,7 @@ filenames should be in this format "user_id"-"planner name".txt
 total_users = 0
 current_user = 0
 current_password = ""
+current_dir_len = 0
 
 
 def main():
@@ -92,8 +94,7 @@ def main():
                     current_user = user_id
                     global current_password
                     # this is necessary or else it keeps a new freakin line
-                    raggy = raggy.rstrip()
-                    raggy = raggy.lstrip()
+                    raggy = truncate(raggy)
                     current_password = raggy
                     break
                 else:
@@ -131,9 +132,10 @@ def main():
         time.sleep(1)
         print("Goodbye.")
         exit()
+    # logged in at this point
+    set_curr_dir_len(get_curr_dir())
     print("\nWelcome, user " + str(current_user) + ", with password \"" + str(current_password) + "\"")
     print_curr_dir()
-    admin_command()
     print("aight, peace out")
 
 
@@ -172,8 +174,8 @@ def new_user():
                 if total_users == 1:
                     print("Also, because you are the first user for this system, you get admin access to delete it "
                           "all!\n")
-                    daphne_blake.write("admin command\n")
-                daphne_blake.write("create new planner\n")
+                    daphne_blake.write("Admin command\n")
+                daphne_blake.write("Create new planner\n")
                 daphne_blake.close()
                 frederick_jones = open("vault.txt", "a")
                 frederick_jones.write("\n" + new_pass)
@@ -183,17 +185,70 @@ def new_user():
             print("The password you entered contains illegal characters. Please try again\n")
 
 
+def run_choice(choice: int):
+    print(choice, "was chosen")
+    daphne_blake = open(get_curr_dir())
+    for x in range(0, choice - 1):
+        daphne_blake.readline()
+    velma_dinkley = daphne_blake.readline()
+    daphne_blake.close()
+    velma_dinkley = truncate(velma_dinkley)
+    print("\"" + str(velma_dinkley) + "\"")
+    if velma_dinkley == "Admin command":
+        admin_command()
+    elif velma_dinkley == "Create new planner":
+        create_routine()
+    else:
+        run_routine(velma_dinkley)
+    '''
+    After getting the choice, from here, execute either admin command, create routine, or run routine
+    '''
+
+def create_routine():
+    print("routine creation")
+
+def run_routine(filename):
+    #if ... contains "routine" then pass it here
+    print("running routine \"" + str(filename) + "\"")
+
+def get_dir_choice():
+    while True:
+        choice = input("\nPlease enter the number for the task you'd like to do: ")
+        if choice.isnumeric() and choice.isdigit():
+            choice = int(choice)
+            if choice > 0 and choice <= current_dir_len:
+                break
+            else:
+                print("Please enter a number that is available.\n")
+        else:
+            print("Please enter a number that is available.\n")
+    run_choice(choice)
+
+
 def print_curr_dir():
     daphne_blake = open(get_curr_dir())
     count = 1
+    print("Options:")
     for line in daphne_blake:
-        line = line.lstrip()
-        line = line.rstrip()
+        line = truncate(line)
         print(str(count) + " - " + line)
         count += 1
+    daphne_blake.close()
+    get_dir_choice()
+
 
 def get_curr_dir():
     return str(current_user) + "directory.txt"
+
+
+def set_curr_dir_len(input):
+    frederick_jones = open(input)
+    count = 0
+    for line in frederick_jones:
+        count += 1
+    global current_dir_len
+    current_dir_len = count
+    frederick_jones.close()
 
 
 def admin_command():
@@ -216,6 +271,12 @@ def admin_command():
                 os.remove(get_curr_dir())
         os.remove("vault.txt")
         print("Everything's deleted.")
+
+
+def truncate(snip):
+    snip = snip.lstrip()
+    snip = snip.rstrip()
+    return snip
 
 
 def cs():
