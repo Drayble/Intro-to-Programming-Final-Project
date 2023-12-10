@@ -5,10 +5,11 @@ import time
 Reference sheet for anyone that doesn't watch Scooby-Doo:
 *Note the first letter similarities for simplicity
 
-federick_jones - file handler
-raggy - referencer
-daphne_blake - directory handler
-velma_dinkly - decision handler
+Frederick_jones - File handler
+Raggy - Referencer
+Daphne_blake - Directory handler
+velma_Dinkly - Decision handler
+SCooby_doo - file scraper to print 
 
 vault is the password manager
 any file with the name "dir" is the menu for the user's planners
