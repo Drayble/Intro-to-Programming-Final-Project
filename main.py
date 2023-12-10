@@ -134,9 +134,10 @@ def main():
         exit()
     # logged in at this point
     set_curr_dir_len(get_curr_dir())
-    print("\nWelcome, user " + str(current_user) + ", with password \"" + str(current_password) + "\"")
+    cs()
+    cs()
     print_curr_dir()
-    print("aight, peace out")
+    print("Alrighty, bye for now! :D")
 
 
 def new_user():
@@ -186,14 +187,12 @@ def new_user():
 
 
 def run_choice(choice: int):
-    print(choice, "was chosen")
     daphne_blake = open(get_curr_dir())
     for x in range(0, choice - 1):
         daphne_blake.readline()
     velma_dinkley = daphne_blake.readline()
     daphne_blake.close()
     velma_dinkley = truncate(velma_dinkley)
-    print("\"" + str(velma_dinkley) + "\"")
     if velma_dinkley == "Admin command":
         admin_command()
     elif velma_dinkley == "Create new planner":
@@ -203,6 +202,7 @@ def run_choice(choice: int):
     '''
     After getting the choice, from here, execute either admin command, create routine, or run routine
     '''
+
 
 def create_routine():
     while True:
@@ -237,10 +237,36 @@ def create_routine():
                 break
         else:
             print("The password you entered contains illegal characters. Please try again\n")
+    print("You may now enter what you'd like this routine to say.")
+    print("To enter text, just type away and press enter when you want to go to the next line.")
+    print("There is no deleting lines so type carefully. <3")
+    print("Simply type \"stop\" to finish your writing.")
+    print("Enjoy!")
+    time.sleep(2)
+    print("\n\n")
+    velma_dinkly = open(filename, "a")
+    while True:
+        user_feed = input("")
+        checker = user_feed.lower()
+        if checker != "stop" and checker.isprintable():
+            velma_dinkly.write(user_feed + "\n")
+        else:
+            break
+    velma_dinkly.close()
+    print("\nWriting for routine is finished")
 
 def run_routine(filename):
     # if ... contains "routine" then pass it here
-    print("running routine \"" + str(filename) + "\"")
+    print("Running routine \"" + str(filename) + "\":\n")
+    full_file_name = str(current_user) + filename + ".txt"
+    scooby_doo = open(full_file_name)
+    for line in scooby_doo:
+        line = truncate(line)
+        print(" - " + line)
+        time.sleep(0.75)
+    scooby_doo.close()
+    print("\n\n\n")
+
 
 def get_dir_choice():
     while True:
